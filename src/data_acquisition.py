@@ -13,7 +13,7 @@ os.makedirs('../data/raw', exist_ok=True)
 def fetch_nasa_data():
     print("Fetching NASA POWER data...")
     lat, lon = 7.1907, 125.4553  # Davao coordinates
-    start, end = '20230101', '20231231'
+    start, end = '20240101', '20241231'
     
     base_url = "https://power.larc.nasa.gov/api/temporal/daily/point"
     params = {
@@ -92,6 +92,9 @@ def fetch_osm_data():
 
         # Keep only geometry + compute rooftop area
         buildings = buildings[["geometry"]].reset_index(drop=True)
+
+        buildings = buildings.to_crs(epsg=32651)
+
         buildings["rooftop_area_sq_m"] = buildings.geometry.area
 
         # Save to file
